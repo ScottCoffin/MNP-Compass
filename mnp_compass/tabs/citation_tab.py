@@ -1,4 +1,4 @@
-"""Citation, license, and codebase information tab for the MP Methods Navigator."""
+"""Citation, license, and codebase information tab for MNP Compass."""
 
 from __future__ import annotations
 
@@ -124,7 +124,7 @@ Full license text: https://www.gnu.org/licenses/agpl-3.0.html
 
 
 ABOUT_TEXT = (
-    "The Microplastics Methods Navigator is an interactive decision-tree web tool for "
+    "MNP Compass is an interactive decision-tree web tool for "
     "researchers designing microplastics monitoring, toxicology, or risk assessment studies. "
     "Users step through their study type, environmental matrix (drinking water, sediment, "
     "biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical "

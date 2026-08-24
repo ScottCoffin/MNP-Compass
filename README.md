@@ -1,4 +1,4 @@
-# Microplastics Methods Navigator
+# MNP Compass
 
 This repository contains the Streamlit companion app and supporting materials for the manuscript:
 
@@ -6,9 +6,9 @@ This repository contains the Streamlit companion app and supporting materials fo
 
 The app helps researchers locate microplastics and nanoplastics methods, standards, guidance, and risk-assessment references by study domain, matrix, workflow step, instrumentation, particle type, and authority tier.
 
-![Graphical Abstract](methods_navigator/www/graphical_abstract.png)
+![Graphical Abstract](mnp_compass/www/graphical_abstract.png)
 
-The Microplastics Methods Navigator is an interactive decision-tree web tool for researchers designing microplastics monitoring, toxicology, or risk assessment studies. Users step through their study type, environmental matrix (drinking water, sediment, biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical identification, QA/QC, reporting) to retrieve a curated, ranked list of methods, standards, and guidance documents drawn from a crosswalk of > 175 seminal references in microplastics research. Results are grouped by a four-tier authority hierarchy — from Tier 1 normative and binding standards (e.g., ISO, ASTM, government regulations and SOPs) to Tier 4 supporting literature (reviews and commentary) — and displayed with document type, key notes, and direct links, with the option to export filtered results to CSV. A full-text search across all references, an interactive visual decision tree, and a domain glossary are also available.
+MNP Compass is an interactive decision-tree web tool for researchers designing microplastics monitoring, toxicology, or risk assessment studies. Users step through their study type, environmental matrix (drinking water, sediment, biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical identification, QA/QC, reporting) to retrieve a curated, ranked list of methods, standards, and guidance documents drawn from a crosswalk of > 175 seminal references in microplastics research. Results are grouped by a four-tier authority hierarchy — from Tier 1 normative and binding standards (e.g., ISO, ASTM, government regulations and SOPs) to Tier 4 supporting literature (reviews and commentary) — and displayed with document type, key notes, and direct links, with the option to export filtered results to CSV. A full-text search across all references, an interactive visual decision tree, and a domain glossary are also available.
 
 ## Quick Start
 
@@ -19,7 +19,7 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
-streamlit run methods_navigator/app.py
+streamlit run mnp_compass/app.py
 ```
 
 On Linux, macOS, Codespaces, or Streamlit Cloud, install Graphviz at the system level as well. This repo includes `packages.txt` with the `graphviz` package for environments that read apt package manifests.
@@ -39,7 +39,7 @@ python tests/smoke_test.py
 |-- requirements.txt
 |-- requirements-metadata.txt
 |-- packages.txt
-|-- methods_navigator/
+|-- mnp_compass/
 |   |-- app.py
 |   |-- config/
 |   |   `-- tree_structure.yaml
@@ -68,13 +68,13 @@ python tests/smoke_test.py
 
 ## Core Files
 
-`methods_navigator/app.py` is the Streamlit entry point.
+`mnp_compass/app.py` is the Streamlit entry point.
 
-`methods_navigator/data/crosswalk.xlsx` is the source workbook. The app reads the `Crosswalk Table` sheet and does not modify it.
+`mnp_compass/data/crosswalk.xlsx` is the source workbook. The app reads the `Crosswalk Table` sheet and does not modify it.
 
-`methods_navigator/config/tree_structure.yaml` stores the decision-tree structure and gap notes.
+`mnp_compass/config/tree_structure.yaml` stores the decision-tree structure and gap notes.
 
-`methods_navigator/tabs/` contains the app tab renderers for the visual decision tree, crosswalk browser, glossary, and citation/license page.
+`mnp_compass/tabs/` contains the app tab renderers for the visual decision tree, crosswalk browser, glossary, and citation/license page.
 
 `scripts/fill_crosswalk_metadata.py` is the active maintenance script for filling selected workbook metadata fields from Zotero, PDFs, DOI/URL pages, and an Anthropic model.
 
@@ -134,13 +134,13 @@ python scripts/fill_crosswalk_metadata.py --resume --start-row 42 --batch-size 3
 python scripts/fill_crosswalk_metadata.py --resume --batch-size 3 --skip-url-scrape
 ```
 
-The default cache and audit files live under `methods_navigator/data/metadata_cache/`. The audit CSV is append-only across runs; delete `methods_navigator/data/metadata_cache/crosswalk_metadata_audit.csv` before a new run if you want a fresh audit log.
+The default cache and audit files live under `mnp_compass/data/metadata_cache/`. The audit CSV is append-only across runs; delete `mnp_compass/data/metadata_cache/crosswalk_metadata_audit.csv` before a new run if you want a fresh audit log.
 
 ## Reproducibility Notes
 
 Use the root-level `requirements.txt` and `packages.txt` for app execution. Use `requirements-metadata.txt` only for the optional metadata fill workflow.
 
-Keep `methods_navigator/data/crosswalk.xlsx` as the canonical data source for the app and figures. If you edit the workbook in Excel, close Excel before running scripts that read or write it.
+Keep `mnp_compass/data/crosswalk.xlsx` as the canonical data source for the app and figures. If you edit the workbook in Excel, close Excel before running scripts that read or write it.
 
 Regenerate or check app behavior after structural changes with:
 
@@ -151,10 +151,10 @@ python tests/smoke_test.py
 Run the app locally with:
 
 ```powershell
-streamlit run methods_navigator/app.py
+streamlit run mnp_compass/app.py
 ```
 
-Figure scripts in `figures/` read the same canonical workbook path: `methods_navigator/data/crosswalk.xlsx`.
+Figure scripts in `figures/` read the same canonical workbook path: `mnp_compass/data/crosswalk.xlsx`.
 
 ## Deployment
 
@@ -162,7 +162,7 @@ For Streamlit Cloud or a dev container:
 
 1. Install apt packages from `packages.txt`.
 2. Install Python packages from `requirements.txt`.
-3. Use `streamlit run methods_navigator/app.py` as the launch command.
+3. Use `streamlit run mnp_compass/app.py` as the launch command.
 
 The `.devcontainer/devcontainer.json` file follows this layout and auto-starts the app on port `8501`.
 

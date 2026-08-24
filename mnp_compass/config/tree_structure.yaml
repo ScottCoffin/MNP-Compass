@@ -1,4 +1,4 @@
-# Microplastics Methods Navigator — Decision Tree Structure
+# MNP Compass — Decision Tree Structure
 # Each node defines a question, options, and how to filter the crosswalk.
 # "filter" keys map to crosswalk column names + conditions.
 

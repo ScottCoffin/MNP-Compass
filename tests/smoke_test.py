@@ -15,14 +15,14 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from methods_navigator.app import (
+from mnp_compass.app import (
     filter_by_domain,
     filter_by_matrix,
     filter_by_topic_column,
     load_crosswalk,
     load_tree,
 )
-from methods_navigator.tabs.visual_tree_tab import (
+from mnp_compass.tabs.visual_tree_tab import (
     INSTRUMENTS,
     MATRICES,
     MONITORING_AUXILIARY,
@@ -62,7 +62,7 @@ def check(condition, message, errors):
 
 def main():
     errors = []
-    app_dir = PROJECT_ROOT / "methods_navigator"
+    app_dir = PROJECT_ROOT / "mnp_compass"
 
     expected_files = {
         "crosswalk.xlsx": app_dir / "data" / "crosswalk.xlsx",

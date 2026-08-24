@@ -1,4 +1,4 @@
-"""Glossary tab for the MP Methods Navigator."""
+"""Glossary tab for MNP Compass."""
 
 from __future__ import annotations
 

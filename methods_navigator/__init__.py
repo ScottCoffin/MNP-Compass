@@ -1,1 +1,0 @@
-"""Microplastics Methods Navigator package."""

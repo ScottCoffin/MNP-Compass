@@ -38,7 +38,7 @@ Command reference:
         python scripts/fill_crosswalk_metadata.py --resume --batch-size 3 --skip-url-scrape
 
     Start a fresh audit log by deleting
-    methods_navigator/data/metadata_cache/crosswalk_metadata_audit.csv before
+    mnp_compass/data/metadata_cache/crosswalk_metadata_audit.csv before
     running. Otherwise, audit rows append across batches/runs.
 
     Overwrite existing metadata fields when needed:
@@ -89,8 +89,8 @@ TARGET_HEADERS = {
 }
 PDF_MAX_PAGES = 5
 PDF_MAX_MARKDOWN_LINES = 500
-DEFAULT_WORKBOOK = Path("methods_navigator/data/crosswalk.xlsx")
-DEFAULT_CACHE_DIR = Path("methods_navigator/data/metadata_cache")
+DEFAULT_WORKBOOK = Path("mnp_compass/data/crosswalk.xlsx")
+DEFAULT_CACHE_DIR = Path("mnp_compass/data/metadata_cache")
 
 
 @dataclass
@@ -1216,7 +1216,7 @@ def main() -> int:
     env_path = Path(env_args.env_file)
     if not env_path.is_absolute():
         env_path = base_dir / env_path
-    legacy_env_path = base_dir / "methods_navigator" / ".env"
+    legacy_env_path = base_dir / "mnp_compass" / ".env"
     if env_args.env_file == ".env" and not env_path.exists() and legacy_env_path.exists():
         env_path = legacy_env_path
     load_env_file(env_path)

@@ -1,15 +1,15 @@
 """
-Microplastics Methods Navigator
+MNP Compass
 Interactive decision-tree tool for researchers planning MP monitoring or toxicology studies.
 Reads from the crosswalk Excel file and guides users to the best available references by tier.
 
 Usage from the repository root:
     pip install -r requirements.txt
-    streamlit run methods_navigator/app.py
+    streamlit run mnp_compass/app.py
 
 Expects:
-    - methods_navigator/data/crosswalk.xlsx
-    - methods_navigator/config/tree_structure.yaml
+    - mnp_compass/data/crosswalk.xlsx
+    - mnp_compass/config/tree_structure.yaml
 """
 
 import streamlit as st
@@ -471,7 +471,7 @@ def get_gap_note(tree, matrix_key, step_key):
 
 def main():
     st.set_page_config(
-        page_title="MP Methods Navigator",
+        page_title="MNP Compass",
         page_icon="🔬",
         layout="wide",
     )
@@ -482,7 +482,7 @@ def main():
         if _ga_path.exists():
             st.image(str(_ga_path), use_container_width=True)
     with _txt_col:
-        st.title("Microplastics Methods Navigator")
+        st.title("MNP Compass")
         st.markdown(
             "*Interactive decision tree for planning microplastics "
             "monitoring and toxicology studies.*  \n"
@@ -877,7 +877,7 @@ def main():
     st.markdown(
         "<div style='text-align: center; color: #888; "
         "font-size: 0.85em;'>"
-        "<strong>Microplastics Methods Navigator</strong> · "
+        "<strong>MNP Compass</strong> · "
         "AGPL-3.0 License 2026<br/>"
         f"Crosswalk entries: {len(df)} · "
         f"Tier 1: {len(df[df['tier_num'] == 1])} · "

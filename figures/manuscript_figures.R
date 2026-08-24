@@ -24,7 +24,7 @@ library(scales)
 
 # ── CONFIG ──────────────────────────────────────────────────────────────────
 
-CROSSWALK_FILE <- "methods_navigator/data/crosswalk.xlsx"
+CROSSWALK_FILE <- "mnp_compass/data/crosswalk.xlsx"
 SHEET_NAME <- "Crosswalk Table"
 OUT_DIR <- "figures"
 

@@ -1,4 +1,4 @@
-"""Interactive crosswalk table tab for the MP Methods Navigator."""
+"""Interactive crosswalk table tab for MNP Compass."""
 
 from __future__ import annotations
 
