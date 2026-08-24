@@ -87,7 +87,7 @@ AUTHORS = [
     },
 ]
 
-GITHUB_URL = "https://github.com/ScottCoffin/Microplastics-Methods-Navigator"
+GITHUB_URL = "https://github.com/ScottCoffin/MNP-Compass"
 
 GITHUB_LOGO_SVG = """
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
@@ -191,7 +191,7 @@ def render_citation_tab():
     st.markdown(
         f"{GITHUB_LOGO_SVG}"
         f"<a href='{GITHUB_URL}' target='_blank' style='font-size:1.05em; font-weight:600;'>"
-        f"ScottCoffin/Microplastics-Methods-Navigator</a>",
+        f"ScottCoffin/MNP-Compass</a>",
         unsafe_allow_html=True,
     )
     st.markdown(
