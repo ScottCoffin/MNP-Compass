@@ -972,13 +972,28 @@ GLOSSARY: list[dict] = [
 
     # ── Authority & Document Types ──────────────────────────────────────────
     {
-        "term": "Tier 1 — Normative / Binding",
-        "category": "Authority Tier System",
+        "term": "Authority and Validation Tier Framework",
+        "category": "Authority and Validation Tier System",
         "definition": (
-            "Documents with legal or regulatory force: statutes (legislation), enforceable regulations, "
-            "government-issued SOPs with regulatory backing (e.g., California SWRCB methods), "
-            "or consensus standards formally adopted by regulators (e.g., ISO standards cited in law). "
-            "Compliance is required in the relevant jurisdiction."
+            "MNP Compass classifies each resource using a four-tier authority and validation framework that "
+            "characterizes the basis and strength of a resource's authority — not its overall scientific quality, "
+            "utility, or currency. A lower-tier resource may be more current or more applicable to a particular "
+            "research question than a higher-tier one; the tiers represent a gradient from formally binding "
+            "requirements to supporting scientific context, not a numerical score of study or resource quality."
+        ),
+        "decision_tree_relevance": (
+            "Use the tier alongside factors such as methodological relevance, recency, applicability, and "
+            "available resources — not as a standalone quality ranking."
+        ),
+    },
+    {
+        "term": "Tier 1 — Normative / Binding",
+        "category": "Authority and Validation Tier System",
+        "definition": (
+            "Requirements, procedures, or methods that carry a formal legal, regulatory, or institutional mandate "
+            "within a defined jurisdiction or program: legislation and regulations, regulatory decisions, and "
+            "standardized methods or SOPs required for regulatory compliance, accreditation, or official monitoring "
+            "(e.g., California SWRCB drinking water methods, ISO standards cited in law)."
         ),
         "decision_tree_relevance": (
             "Highest authority in the decision tree. When a Tier 1 document exists, it should be the primary reference. "
@@ -987,11 +1002,12 @@ GLOSSARY: list[dict] = [
     },
     {
         "term": "Tier 2 — Authoritative / Institutional",
-        "category": "Authority Tier System",
+        "category": "Authority and Validation Tier System",
         "definition": (
-            "Documents from recognized international bodies (WHO, GESAMP, EFSA, NOAA) or consensus standards "
-            "not yet formally adopted by regulators (ISO, ASTM), and major agency technical reports. "
-            "Not legally binding but carry substantial scientific and policy authority."
+            "Standards, methods, guidance, and other resources formally issued or endorsed by recognized "
+            "standards-development organizations, governmental or intergovernmental bodies, or comparable "
+            "institutions (e.g., ISO, ASTM, WHO, EFSA, GESAMP, NIST), but not themselves mandatory in the "
+            "relevant application."
         ),
         "decision_tree_relevance": (
             "Primary reference when no Tier 1 document exists for a matrix/step combination. "
@@ -999,31 +1015,36 @@ GLOSSARY: list[dict] = [
         ),
     },
     {
-        "term": "Tier 3 — Peer-Reviewed / Validated",
-        "category": "Authority Tier System",
+        "term": "Tier 3 — Validated / Interlaboratory-Tested / Critical Guidance",
+        "category": "Authority and Validation Tier System",
         "definition": (
-            "Published methods with quantitative validation data (recovery experiments, method detection limits, "
-            "interlaboratory comparisons) that have passed peer review. The best available option when "
-            "no Tier 1 or 2 document exists — which is the case for most matrices outside drinking water."
+            "Resources supported by substantial empirical or evidence-synthesis-based evaluation but lacking the "
+            "formal mandate or institutional status of Tiers 1–2: methods evaluated through interlaboratory "
+            "comparison, proficiency testing, or quantitative validation, as well as critical or systematic reviews "
+            "that establish evidence-based QA/QC criteria, performance criteria, or methodological recommendations."
         ),
         "decision_tree_relevance": (
-            "Most commonly cited references for matrices with standardization gaps (Air, Food, Soil, Human Tissue)."
+            "Most commonly cited tier for matrices with standardization gaps (Air, Food, Soil, Human Tissue), "
+            "where no Tier 1 or 2 resource yet exists."
         ),
     },
     {
         "term": "Tier 4 — Supporting / Contextual",
-        "category": "Authority Tier System",
+        "category": "Authority and Validation Tier System",
         "definition": (
-            "Reviews, frameworks, commentary, and emerging methods that inform study design but do not provide "
-            "primary methodological guidance. Useful for background, context, and identifying areas of scientific debate."
+            "Resources that provide useful methodological, scientific, or interpretive context but have not "
+            "undergone the level of validation or evidence synthesis represented by Tier 3, and do not carry the "
+            "formal institutional authority of Tiers 1–2: emerging or single-laboratory methods, research tools "
+            "and databases, narrative reviews, perspectives, frameworks, and other supporting literature."
         ),
         "decision_tree_relevance": (
-            "Lowest authority tier. Not recommended as standalone primary references for regulatory or standardization purposes."
+            "Lowest formal authority tier. Useful for background, context, and identifying areas of active "
+            "scientific debate; consider pairing with a higher-tier reference for regulatory or standardization purposes."
         ),
     },
     {
         "term": "Consensus Standard",
-        "category": "Authority Tier System",
+        "category": "Authority and Validation Tier System",
         "definition": (
             # ── CORRECTED ──
             # ISO 24187 correctly described as general principles for environmental
@@ -1042,7 +1063,7 @@ GLOSSARY: list[dict] = [
     },
     {
         "term": "Government SOP",
-        "category": "Authority Tier System",
+        "category": "Authority and Validation Tier System",
         "definition": (
             "A Standard Operating Procedure issued by a regulatory or government agency with specific, "
             "step-by-step analytical instructions that analysts can follow directly. "

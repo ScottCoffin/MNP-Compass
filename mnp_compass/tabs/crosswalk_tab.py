@@ -15,7 +15,7 @@ DEFAULT_COLUMNS = [
     "Year",
     "Primary Domain",
     "Document Type",
-    "Priority Tier",
+    "Authority and Validation Tier",
     "Instrumentation Tags",
     "Matrix Tags",
     "Key Notes",
@@ -32,7 +32,7 @@ NON_TOPIC_COLUMNS = {
     "Primary Domain",
     "Primary Focus",
     "Document Type",
-    "Priority Tier",
+    "Authority and Validation Tier",
     "Instrumentation Tags",
     "Matrix Tags",
     "Key Notes",
@@ -156,7 +156,7 @@ def compact_export_df(df):
         "Short Citation": ["Short Citation"],
         "Year": ["Year"],
         "Document Type": ["Document Type"],
-        "Tier": ["Priority Tier", "tier_num"],
+        "Tier": ["Authority and Validation Tier", "tier_num"],
         "DOI": ["DOI/URL", "DOI", "URL"],
         "Key Notes": ["Key Notes"],
     }
@@ -385,7 +385,7 @@ def style_row(row):
     styles = [""] * len(row)
     for idx, column in enumerate(row.index):
         value = row[column]
-        if column == "Priority Tier":
+        if column == "Authority and Validation Tier":
             styles[idx] = TIER_STYLES.get(extract_tier(value), "")
         elif column == "Primary Domain":
             styles[idx] = DOMAIN_STYLES.get(str(value).strip().lower(), "")

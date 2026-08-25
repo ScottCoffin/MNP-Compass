@@ -110,7 +110,7 @@ def main():
     required = [
         "Short Citation",
         "Document Type",
-        "Priority Tier",
+        "Authority and Validation Tier",
         "Key Notes",
         "Primary Domain",
         "Instrumentation Tags",

@@ -150,7 +150,7 @@ TIER_ICONS = {1: "🟢", 2: "🔵", 3: "🟡", 4: "⚪"}
 TIER_LABELS = {
     1: "★★★★ Tier 1 — Normative / Binding",
     2: "★★★☆ Tier 2 — Authoritative / Institutional",
-    3: "★★☆☆ Tier 3 — Peer-Reviewed / Validated",
+    3: "★★☆☆ Tier 3 — Validated / Interlaboratory-Tested / Critical Guidance",
     4: "★☆☆☆ Tier 4 — Supporting / Contextual",
 }
 
@@ -1143,7 +1143,7 @@ def _compact_export_df(df):
         "Short Citation": ["Short Citation"],
         "Year": ["Year"],
         "Document Type": ["Document Type"],
-        "Tier": ["Priority Tier", "Tier", "tier_num"],
+        "Tier": ["Authority and Validation Tier", "Tier", "tier_num"],
         "DOI": ["DOI/URL", "DOI", "URL"],
         "Key Notes": ["Key Notes"],
     }

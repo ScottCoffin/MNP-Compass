@@ -32,6 +32,8 @@ CONFIG_DIR = APP_DIR / "config"
 CROSSWALK_FILE = DATA_DIR / "crosswalk.xlsx"
 CROSSWALK_SHEET = "Crosswalk Table"
 TREE_FILE = CONFIG_DIR / "tree_structure.yaml"
+# Matched against the raw workbook header (renamed to "Authority and
+# Validation Tier" for app-internal use once loaded — see load_crosswalk()).
 EXPECTED_CROSSWALK_COLUMNS = {
     "Short Citation",
     "Priority Tier",
@@ -43,7 +45,7 @@ EXPECTED_CROSSWALK_COLUMNS = {
 TIER_LABELS = {
     1: "★★★★ Tier 1 — Normative / Binding",
     2: "★★★☆ Tier 2 — Authoritative / Institutional",
-    3: "★★☆☆ Tier 3 — Peer-Reviewed / Validated",
+    3: "★★☆☆ Tier 3 — Validated / Interlaboratory-Tested / Critical Guidance",
     4: "★☆☆☆ Tier 4 — Supporting / Contextual",
 }
 
@@ -67,11 +69,12 @@ def load_crosswalk():
         st.stop()
 
     df = read_crosswalk_sheet()
+    df = df.rename(columns={"Priority Tier": "Authority and Validation Tier"})
 
-    # Extract tier number from Priority Tier string (e.g., "★★★★ Tier 1 ..." → 1)
-    if "Priority Tier" in df.columns:
+    # Extract tier number from Authority and Validation Tier string (e.g., "★★★★ Tier 1 ..." → 1)
+    if "Authority and Validation Tier" in df.columns:
         df["tier_num"] = (
-            df["Priority Tier"]
+            df["Authority and Validation Tier"]
             .astype(str)
             .str.extract(r"Tier\s*(\d)")
             .astype(float)
@@ -252,7 +255,7 @@ def compact_export_df(df):
         "Short Citation": ["Short Citation"],
         "Year": ["Year"],
         "Document Type": ["Document Type"],
-        "Tier": ["Priority Tier", "Tier", "tier_num"],
+        "Tier": ["Authority and Validation Tier", "Tier", "tier_num"],
         "DOI": ["DOI/URL", "DOI", "URL"],
         "Key Notes": ["Key Notes"],
     }

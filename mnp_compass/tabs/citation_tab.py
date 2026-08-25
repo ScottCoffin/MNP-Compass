@@ -130,12 +130,63 @@ ABOUT_TEXT = (
     "biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical "
     "identification, QA/QC, reporting) to retrieve a curated, ranked list of methods, "
     "standards, and guidance documents drawn from a crosswalk of approximately 150 seminal "
-    "references in microplastics research. Results are grouped by a four-tier authority "
-    "hierarchy — from Tier 1 normative and binding standards (e.g., ISO, ASTM, government "
-    "regulations and SOPs) to Tier 4 supporting literature (reviews and commentary) — and "
-    "displayed with document type, key notes, and direct links, with the option to export "
-    "filtered results to CSV. A full-text search across all references, an interactive visual "
-    "decision tree, and a domain glossary are also available."
+    "references in microplastics research. Results are grouped by a four-tier authority and "
+    "validation framework — described in detail below — and displayed with document type, "
+    "key notes, and direct links, with the option to export filtered results to CSV. "
+    "A full-text search across all references, an interactive visual decision tree, and a "
+    "domain glossary are also available."
+)
+
+TIER_FRAMEWORK_INTRO = (
+    "To organize resources that differ substantially in their institutional status and degree "
+    "of methodological validation, MNP Compass classifies each resource using a four-tier "
+    "**authority and validation framework**. The tiers are intended to characterize the basis "
+    "and strength of a resource's authority, rather than its overall scientific quality, "
+    "utility, or currency; consequently, a lower-tier resource may be more current or more "
+    "applicable to a particular research question than a higher-tier resource."
+)
+
+TIER_FRAMEWORK_TIERS = [
+    (
+        "🟢 Tier 1 — Normative / Binding",
+        "Requirements, procedures, or methods that carry a formal legal, regulatory, or "
+        "institutional mandate within a defined jurisdiction or program. Examples include "
+        "legislation and regulations, regulatory decisions, and standardized methods or "
+        "standard operating procedures required for regulatory compliance, accreditation, "
+        "or official monitoring.",
+    ),
+    (
+        "🔵 Tier 2 — Authoritative / Institutional",
+        "Standards, methods, guidance, and other resources formally issued or endorsed by "
+        "recognized standards-development organizations, governmental or intergovernmental "
+        "bodies, or comparable institutions, but that are not themselves mandatory in the "
+        "relevant application. Examples include ISO and ASTM standards and formal guidance "
+        "from organizations such as WHO, EFSA, GESAMP, NIST, and similar bodies.",
+    ),
+    (
+        "🟡 Tier 3 — Validated / Interlaboratory-Tested / Critical Guidance",
+        "Resources supported by substantial empirical or evidence-synthesis-based evaluation "
+        "but lacking the formal mandate or institutional status of Tiers 1 and 2. This category "
+        "includes methods evaluated through interlaboratory comparison, proficiency testing, or "
+        "quantitative validation, as well as critical or systematic reviews that establish "
+        "evidence-based QA/QC criteria, performance criteria, or methodological recommendations.",
+    ),
+    (
+        "⚪ Tier 4 — Supporting / Contextual",
+        "Resources that provide useful methodological, scientific, or interpretive context but "
+        "have not undergone the level of validation or evidence synthesis represented by Tier 3 "
+        "and do not carry the formal institutional authority of Tiers 1 or 2. Examples include "
+        "emerging or single-laboratory methods, research tools and databases, narrative reviews, "
+        "perspectives, frameworks, and other supporting literature.",
+    ),
+]
+
+TIER_FRAMEWORK_OUTRO = (
+    "The resulting classification therefore represents a gradient from formally binding "
+    "requirements to supporting scientific context, rather than a numerical score of study or "
+    "resource quality. MNP Compass presents resources across tiers so that users can consider "
+    "formal authority alongside factors such as methodological relevance, recency, "
+    "applicability, and available resources."
 )
 
 
@@ -149,6 +200,16 @@ def render_citation_tab():
         with _img_col:
             st.image(str(_GRAPHICAL_ABSTRACT), caption="Granek et al. (in review). Graphical Abstract", use_container_width=True)
     st.markdown(ABOUT_TEXT)
+
+    st.divider()
+
+    # ── Authority and Validation Tier Framework ────────────────────────────────
+    st.markdown("### Authority and Validation Tier Framework")
+    st.markdown(TIER_FRAMEWORK_INTRO)
+    for title, description in TIER_FRAMEWORK_TIERS:
+        st.markdown(f"**{title}**")
+        st.markdown(description)
+    st.markdown(TIER_FRAMEWORK_OUTRO)
 
     st.divider()
 
