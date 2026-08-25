@@ -490,7 +490,9 @@ def main():
             "*Interactive decision tree for planning microplastics "
             "monitoring and toxicology studies.*  \n"
             "Select your study type, matrix, and workflow step to find "
-            "the best available methods ranked by authority tier."
+            "the best available methods ranked by authority tier — "
+            "Tier 1 (Normative/Binding) to Tier 4 (Supporting/Contextual); "
+            "see the About tab for the full framework."
         )
 
     # Load data
