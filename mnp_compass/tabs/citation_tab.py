@@ -9,6 +9,32 @@ import streamlit as st
 _WWW_DIR = Path(__file__).resolve().parent.parent / "www"
 _GRAPHICAL_ABSTRACT = _WWW_DIR / "graphical_abstract.png"
 
+# TODO(human): confirm final manuscript title.
+#
+# PAPER_TITLE is the single constant used both for the "Companion Publication"
+# info box and the "Suggested Citation" text below — do not retype the title
+# in a second place.
+#
+# mandate.md (Task 3) asserted the manuscript's current title is "MNP
+# Compass: a resource for coordinating microplastics research, reporting,
+# and publication criteria across disciplines," sourced from an internal
+# reference to a "Letter-to-journals-and-funders-(2).docx" that is not
+# present anywhere in this repository (checked: no .docx files exist at
+# all; neither "Letter to journals and funders.md" at the repo root nor
+# docs/letter-to-journals-and-funders.md contains the phrase "MNP Compass").
+# That claim could not be verified and is NOT applied here.
+#
+# What the audit actually found: the repo-root "Letter to journals and
+# funders.md" (the more complete/recent of the two letter drafts, with a
+# full author list) titles the piece "Learning from history instead of
+# reinventing the wheel: A call for coordinating microplastics research,
+# reporting, and publication criteria across disciplines" — one word
+# different from the title below ("call" vs. "resource"). The value below
+# is left unchanged (it's the best-attested title in-repo) pending a human
+# confirming the actual current manuscript title — including whether the
+# "MNP Compass:" framing mandate.md referenced exists in some other
+# document outside this repository (e.g. Obsidian/Drive) that should be
+# treated as authoritative instead.
 PAPER_TITLE = (
     "Learning from history instead of reinventing the wheel: "
     "A resource for coordinating microplastics research, reporting, "

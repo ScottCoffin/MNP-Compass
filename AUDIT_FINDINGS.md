@@ -142,6 +142,31 @@ Rows whose `Short Citation` or `Document Type` mentions ISO/ASTM **and** whose `
 mis-tiering to report to the maintainer. The README's old wording was a documentation error only,
 not a symptom of bad data.
 
+## Task 3 finding: the mandate's claimed manuscript title could not be verified
+
+`mandate.md` asserts the current manuscript title is "MNP Compass: a resource for coordinating
+microplastics research, reporting, and publication criteria across disciplines," citing an
+internal reference to `Letter-to-journals-and-funders-(2).docx`. **No `.docx` file exists anywhere
+in this repository**, and the phrase "MNP Compass" does not appear in either letter draft that
+does exist:
+
+- `Letter to journals and funders.md` (repo root, the more complete draft with a full author list)
+  titles the piece "Learning from history instead of reinventing the wheel: **A call for**
+  coordinating microplastics research, reporting, and publication criteria across disciplines."
+- `docs/letter-to-journals-and-funders.md` (an earlier/rougher draft) titles it "Don't reinvent the
+  wheel - Call for utilizing microplastics research, reporting, and publication criteria."
+
+`citation_tab.py`'s current `PAPER_TITLE` already matches the root-level draft almost exactly
+("**A resource for** coordinating..." vs. "A call for coordinating...") — a one-word difference,
+not the wholesale "MNP Compass:" retitle the mandate described. Per mandate rule 0.1 ("if the
+current state differs from the description, adapt the fix to the real code and note the
+difference"), `PAPER_TITLE` was left unchanged and a `TODO(human)` was added in its place instead
+of applying the unverifiable title. **Flagged for the maintainer:** confirm the actual current
+manuscript title, and check whether a newer draft (with the "MNP Compass:" framing) exists outside
+this repository — e.g. in a source the mandate's authoring process had access to but this session
+did not (Obsidian and another MCP connector both failed to connect in this session, for what
+that's worth).
+
 ## Task 11 data point (report only)
 
 Rows with either `Material Standards - materials` or `Material Standards - protocol` populated
