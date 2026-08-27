@@ -80,6 +80,14 @@ from openpyxl.utils import get_column_letter
 DEFAULT_MODEL = "claude-haiku-4-5-20251001"
 HEADER_ROW = 2
 DATA_START_ROW = 3
+# "Reviewed" here is this script's own Yes/No processing flag (has this row
+# already been run through metadata extraction?) — it is unrelated to the
+# workbook's pre-existing "Status" column, which is a hand-curated free-text
+# field describing a document's adoption/legal status (e.g., "In force 2024",
+# "Adopted 2022"). Neither "Reviewed" nor "PDF Available in Zotero?" exist in
+# the workbook until this script's --write path creates them (see
+# ensure_target_columns below); the app and smoke test only ever require
+# "Status", which already exists. Do not conflate the two.
 TARGET_HEADERS = {
     "particle_size_range": "Particle Size Range",
     "key_metrics_output": "Key Metrics / Output",
