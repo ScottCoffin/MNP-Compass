@@ -137,6 +137,10 @@ ABOUT_TEXT = (
     "domain glossary are also available."
 )
 
+# Canonical tier definitions for the whole app. README.md's tier section is a manual
+# verbatim quote of TIER_FRAMEWORK_INTRO / TIER_FRAMEWORK_TIERS / TIER_FRAMEWORK_OUTRO —
+# if you change the wording here, update README.md's "Authority and Validation Tier
+# Framework" section to match, and vice versa. Do not retype tier definitions elsewhere.
 TIER_FRAMEWORK_INTRO = (
     "To organize resources that differ substantially in their institutional status and degree "
     "of methodological validation, MNP Compass classifies each resource using a four-tier "
