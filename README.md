@@ -205,6 +205,8 @@ For Streamlit Cloud or a dev container:
 
 The `.devcontainer/devcontainer.json` file follows this layout and auto-starts the app on port `8501`.
 
+**Graphviz note:** `requirements.txt`'s `graphviz` package is only the Python binding — rendering the decision-tree diagram also requires the system `dot` executable, which `pip` does not install. `packages.txt` (apt package `graphviz`) supplies it on Streamlit Community Cloud; on other hosts, install Graphviz through the system package manager. If `dot` is unavailable at runtime, the decision-tree tab shows a warning explaining how to fix it instead of a stack trace.
+
 ## License
 
 This repository is licensed under the GNU Affero General Public License v3.0. See `LICENSE` for the full AGPL-3.0 text.

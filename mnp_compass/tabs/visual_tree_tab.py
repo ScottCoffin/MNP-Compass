@@ -1108,10 +1108,20 @@ def _render_zoomable_graphviz(dot, height):
     try:
         svg = _dot_to_svg(dot)
     except graphviz.ExecutableNotFound:
-        col, _ = st.columns([1, 1])
-        with col:
-            st.graphviz_chart(dot, use_container_width=True)
-        return
+        try:
+            col, _ = st.columns([1, 1])
+            with col:
+                st.graphviz_chart(dot, use_container_width=True)
+            return
+        except Exception:
+            st.warning(
+                "⚠️ The Graphviz `dot` executable was not found on this server, so the "
+                "decision-tree diagram can't be rendered. On Streamlit Community Cloud this "
+                "is provided by the repo's `packages.txt`; locally, install Graphviz "
+                "(e.g. `apt install graphviz`, `brew install graphviz`, or the Windows "
+                "installer) and ensure `dot` is on PATH."
+            )
+            return
     st.iframe(_zoomable_svg_html(svg, height), width="stretch", height=height)
 
 
