@@ -207,6 +207,10 @@ The `.devcontainer/devcontainer.json` file follows this layout and auto-starts t
 
 **Graphviz note:** `requirements.txt`'s `graphviz` package is only the Python binding — rendering the decision-tree diagram also requires the system `dot` executable, which `pip` does not install. `packages.txt` (apt package `graphviz`) supplies it on Streamlit Community Cloud; on other hosts, install Graphviz through the system package manager. If `dot` is unavailable at runtime, the decision-tree tab shows a warning explaining how to fix it instead of a stack trace.
 
+## Contributing
+
+The community can propose new references, corrections, or re-tierings through GitHub issues and pull requests. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow, including how to edit the canonical workbook, the tier schema to apply, and how to validate your change before opening a PR.
+
 ## License
 
 This repository is licensed under the GNU Affero General Public License v3.0. See `LICENSE` for the full AGPL-3.0 text.
