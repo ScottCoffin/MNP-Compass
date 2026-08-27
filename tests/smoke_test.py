@@ -1,5 +1,5 @@
 """
-Headless smoke test for the Microplastics Methods Navigator.
+Headless smoke test for MNP Compass.
 
 Run from the repository root:
     python tests/smoke_test.py
