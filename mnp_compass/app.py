@@ -875,7 +875,7 @@ def main():
 
     with tab6:
         from tabs.citation_tab import render_citation_tab
-        render_citation_tab()
+        render_citation_tab(df)
 
     # ── FOOTER ──────────────────────────────────────────────
     st.divider()

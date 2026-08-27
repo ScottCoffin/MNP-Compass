@@ -123,19 +123,27 @@ Full license text: https://www.gnu.org/licenses/agpl-3.0.html
 """
 
 
-ABOUT_TEXT = (
-    "MNP Compass is an interactive decision-tree web tool for "
-    "researchers designing microplastics monitoring, toxicology, or risk assessment studies. "
-    "Users step through their study type, environmental matrix (drinking water, sediment, "
-    "biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical "
-    "identification, QA/QC, reporting) to retrieve a curated, ranked list of methods, "
-    "standards, and guidance documents drawn from a crosswalk of approximately 150 seminal "
-    "references in microplastics research. Results are grouped by a four-tier authority and "
-    "validation framework — described in detail below — and displayed with document type, "
-    "key notes, and direct links, with the option to export filtered results to CSV. "
-    "A full-text search across all references, an interactive visual decision tree, and a "
-    "domain glossary are also available."
-)
+def _about_text(reference_count):
+    """Build the About-tab intro paragraph.
+
+    The reference count is computed at runtime from the loaded crosswalk
+    dataframe (same source the Crosswalk tab's live count uses) so this text
+    can never drift from the actual data the way a hardcoded number would.
+    """
+    count_phrase = str(reference_count) if reference_count is not None else "150+"
+    return (
+        "MNP Compass is an interactive decision-tree web tool for "
+        "researchers designing microplastics monitoring, toxicology, or risk assessment studies. "
+        "Users step through their study type, environmental matrix (drinking water, sediment, "
+        "biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical "
+        "identification, QA/QC, reporting) to retrieve a curated, ranked list of methods, "
+        f"standards, and guidance documents drawn from a crosswalk of {count_phrase} seminal "
+        "references in microplastics research. Results are grouped by a four-tier authority and "
+        "validation framework — described in detail below — and displayed with document type, "
+        "key notes, and direct links, with the option to export filtered results to CSV. "
+        "A full-text search across all references, an interactive visual decision tree, and a "
+        "domain glossary are also available."
+    )
 
 # Canonical tier definitions for the whole app. README.md's tier section is a manual
 # verbatim quote of TIER_FRAMEWORK_INTRO / TIER_FRAMEWORK_TIERS / TIER_FRAMEWORK_OUTRO —
@@ -194,8 +202,13 @@ TIER_FRAMEWORK_OUTRO = (
 )
 
 
-def render_citation_tab():
-    """Render the citation, codebase, and license tab."""
+def render_citation_tab(df=None):
+    """Render the citation, codebase, and license tab.
+
+    `df` is the loaded crosswalk dataframe (same one the Crosswalk tab
+    displays), passed in so the reference count in the About text is
+    computed live rather than hardcoded.
+    """
 
     # ── About ────────────────────────────────────────────────────────────────
     st.markdown("### About This Tool")
@@ -203,7 +216,8 @@ def render_citation_tab():
         _img_col, _ = st.columns([1, 2])
         with _img_col:
             st.image(str(_GRAPHICAL_ABSTRACT), caption="Granek et al. (in review). Graphical Abstract", use_container_width=True)
-    st.markdown(ABOUT_TEXT)
+    reference_count = len(df) if df is not None else None
+    st.markdown(_about_text(reference_count))
 
     st.divider()
 
