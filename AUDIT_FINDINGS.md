@@ -167,6 +167,28 @@ this repository — e.g. in a source the mandate's authoring process had access 
 did not (Obsidian and another MCP connector both failed to connect in this session, for what
 that's worth).
 
+## Additional finding (out of scope for this mandate, reported only)
+
+While running the final verification gate's "no ISO/ASTM under Tier 1" grep sweep, found that
+`glossary_tab.py`'s "ISO (International Organization for Standardization)" entry claimed "ISO
+standards are Tier 1–2 in the crosswalk" — actually inaccurate (real ISO entries span Tier 2–4,
+none are Tier 1; fixed as a one-line correction alongside Task 10's verification, same commit).
+
+While checking that, discovered a **larger, unrelated taxonomy drift not in mandate.md's task
+list**: the workbook's actual `Document Type` values are `Method / Protocol`, `Review`,
+`Guideline / Best Practice`, `Technical Report`, `Database / Tool`, `Perspective / Commentary`,
+`Interlaboratory Comparison Study`, `Legislation / Regulation`, `Material Standards` (9 values) —
+these do **not** match CLAUDE.md's documented Document Type enum (`Government SOP`,
+`Consensus Standard`, `Agency Technical Report`, `International Guidance`,
+`Scientific Advisory Report`, `Certified Reference Material`, `Interlaboratory Study`, etc.), nor
+`crosswalk_tab.py`'s `INSTITUTIONAL_DOC_TYPES` / `METHOD_DOC_TYPES` styling sets (which reference
+`"Agency Technical Report"`, `"International Guidance"`, `"Scientific Advisory Report"`,
+`"Certified Reference Material"`, `"Interlaboratory Study"` — none of which exist verbatim in the
+data, so those two styling sets currently match zero rows). This looks like cosmetic-only breakage
+(missing color coding for those groups in the Crosswalk tab), not a data-integrity or filtering
+bug, and reconciling the taxonomy is a nontrivial editorial/naming decision of its own. **Left
+unfixed, flagged for the maintainer** as a follow-up outside this mandate's scope.
+
 ## Task 11 data point (report only)
 
 Rows with either `Material Standards - materials` or `Material Standards - protocol` populated

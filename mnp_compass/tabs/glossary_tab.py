@@ -1091,7 +1091,9 @@ GLOSSARY: list[dict] = [
             "ISO 16094-2:2025 (vibrational spectroscopy for MPs in water with low suspended solids)."
         ),
         "decision_tree_relevance": (
-            "ISO standards are Tier 1–2 in the crosswalk. "
+            "ISO standards currently span Tier 2–4 in the crosswalk depending on adoption status "
+            "and validation evidence (none are Tier 1 unless formally incorporated into "
+            "regulation in a given jurisdiction). "
             "Filter Document Type = 'Consensus Standard' in the Crosswalk tab to see ISO entries."
         ),
     },
