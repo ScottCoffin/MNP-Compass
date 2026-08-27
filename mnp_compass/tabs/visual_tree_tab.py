@@ -96,6 +96,37 @@ RA_CORE = [
 
 RA_AUXILIARY = []
 
+# TODO(human): confirm canonical matrix set.
+#
+# This 10-entry MATRICES dict (the one that actually drives the live Decision
+# Tree tab) has diverged from mnp_compass/config/tree_structure.yaml's
+# matrix_select node, which enumerates only 8 matrices — it combines
+# surface_water and wastewater into one "Surface Water / Wastewater" option
+# and has no biosolids entry at all. See AUDIT_FINDINGS.md section C/F for
+# the full history: tree_structure.yaml is currently loaded by app.py but
+# never consumed by this module (render_decision_tree(df, tree) ignores the
+# `tree` argument), so nothing has kept the two enumerations in sync.
+#
+# Additionally, "biosolids" below currently matches zero crosswalk rows —
+# no row's Matrix Tags contains the literal substring "Biosolids"; the one
+# plausibly-related row (Li et al., 2019) is tagged "Soil; Sludge" instead.
+# Whether "Sludge" should count as "Biosolids" for filtering purposes is a
+# domain judgment call, not a text-matching bug (contrast with the "ermp"
+# keyword fix elsewhere in this file, which corrected an objective text
+# mismatch) — left for a human to decide rather than auto-resolved here.
+#
+# Please decide and update this comment when resolved:
+#   1. Should the app use 8 matrices (matching tree_structure.yaml) or these
+#      10 (current live behavior), or some other reconciled set?
+#   2. Should "biosolids" be kept (and its keyword broadened to catch
+#      "Sludge", if that's judged equivalent), merged into another matrix,
+#      or removed?
+#   3. Should tree_structure.yaml be wired up as the real source of truth
+#      for this tab (larger refactor), or formally retired/documented as
+#      dead configuration for the disabled step-by-step tab only?
+# Do not delete a matrix that has real references behind it without
+# confirming first.
+#
 # Matrices
 MATRICES = {
     "drinking_water": {"label": "Drinking Water",  "icon": "🚰", "kw": "Drinking Water"},
@@ -131,7 +162,7 @@ PARTICLE_TYPES = {
     "nanoplastics": {"label": "Nanoplastics", "kw": "Nanoplastics"},
     "microfibers": {"label": "Microfibers / Textiles", "kw": "Microfibers;Textiles;Textile fibers"},
     "tire_wear": {"label": "Tire Wear Particles", "kw": "Tire wear;Tire Wear Particles;TWP"},
-    "ermp": {"label": "Environmentally Realistic Mixtures", "kw": "Environmentally Realistic Mixtures;ERMP"},
+    "ermp": {"label": "Environmentally Realistic Mixtures", "kw": "Environmentally Realistic Microplastic Mixtures;ERMP"},
     "microbeads": {"label": "Microbeads", "kw": "Microbeads"},
 }
 

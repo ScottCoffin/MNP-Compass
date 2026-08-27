@@ -93,7 +93,7 @@ python tests/smoke_test.py
 
 `mnp_compass/data/crosswalk.xlsx` is the source workbook. The app reads the `Crosswalk Table` sheet and does not modify it.
 
-`mnp_compass/config/tree_structure.yaml` stores the decision-tree structure and gap notes.
+`mnp_compass/config/tree_structure.yaml` stores a decision-tree structure and gap notes, loaded by `app.py`. **Note:** the live "Decision Tree" tab is currently rendered entirely by hardcoded Python dicts in `mnp_compass/tabs/visual_tree_tab.py` (matrices, instruments, particle types, workflow steps) and does not read this YAML — the YAML only feeds a "Step-by-Step Navigator" tab that is currently disabled (`step_by_step_enabled = False` in `app.py`). The two enumerations have drifted as a result; see `TODO(human)` in `visual_tree_tab.py` and `AUDIT_FINDINGS.md`.
 
 `mnp_compass/tabs/` contains the app tab renderers for the visual decision tree, crosswalk browser, glossary, and citation/license page.
 
