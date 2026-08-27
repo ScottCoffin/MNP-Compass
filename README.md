@@ -101,6 +101,24 @@ python tests/smoke_test.py
 
 `archive/historical_scripts/` contains older one-off workbook migration scripts. They are retained for provenance, but they are not part of the current app runtime or reproducible maintenance path.
 
+## Crosswalk Data Fields
+
+`mnp_compass/data/crosswalk.xlsx`'s "Crosswalk Table" sheet (header row 2) is the single source of truth for every reference the app surfaces — currently 190 rows. Column headers use embedded line breaks for readability in Excel; the app collapses them to single spaces at load time, and additionally renames `Priority Tier` to `Authority and Validation Tier` in memory (see [Authority and Validation Tier Framework](#authority-and-validation-tier-framework)) without touching the workbook itself.
+
+**Bibliographic:** `#`, `Short Citation`, `Year`, `Full Title`, `DOI/URL`
+
+**Classification & navigation:** `Document Type`, `Priority Tier`, `Primary Domain`, `Primary Focus`, `Instrumentation Tags`, `Matrix Tags`, `Particle/Polymer Type Tags`, `Target Receptor(s)`
+
+**Topic-scoring columns** (hold a tier number 1–4 if the reference addresses that topic, blank otherwise): `Definitions & Terminology`, `Problem Formulation / Framework`, `Sampling (Field Methods)`, the `Matrix: *` columns (Drinking Water, Surface Water incl. Lacustrine/Riverine/Marine, Wastewater, Groundwater, Biosolids, Sediment, Soil, Biota/Tissue, Air/Atmos., Food/Dietary, Human Tissue/Biomonitor), `Sample Processing / Extraction`, `Sub-sampling`, `Analytical Methods (General)`, `FTIR / IR Spectroscopy`, `Raman Spectroscopy`, `Py-GC-MS`, `Imaging`, `Material Standards - materials`, `Material Standards - protocol`, `Blanks & Contamination Control`, `Data Analysis & Statistics`, `Reporting & Harmonization`, `Databases & Data Sharing`, the `Toxicology: *` columns (Study Design & Dosimetry, Effects Testing Methods, Reporting & Harmonization, Databases & Data Sharing), `Risk Assessment / Risk Char.`
+
+**Narrative / metadata:** `Key Notes`, `Scope`, `Status`, `Particle Size Range`, `Key Metrics / Output`, `Abstract`
+
+**Computed, not a workbook column:** `tier_num` — parsed from `Priority Tier` at load time (e.g., "★★★★ Tier 1 ..." → `1`); drives sorting, coloring, and expander grouping throughout the app.
+
+**Curated by hand (always):** everything above except `Particle Size Range`, `Key Metrics / Output`, and `Abstract`.
+
+**Optionally auto-filled:** `scripts/fill_crosswalk_metadata.py` can populate `Particle Size Range`, `Key Metrics / Output`, and `Abstract` from Zotero, PDFs, or DOI/URL landing pages (dry-run by default; see [Metadata Fill Workflow](#metadata-fill-workflow) below). On its first `--write` run it also creates its own `PDF Available in Zotero?` and `Reviewed` tracking columns — these are separate from the pre-existing, hand-curated `Status` column and are not required by the app or its smoke test.
+
 ## Dependencies
 
 Runtime Python dependencies are listed in `requirements.txt`:
