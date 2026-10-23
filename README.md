@@ -1,6 +1,6 @@
 # MNP Compass
 
-This repository contains the Streamlit companion app and supporting materials for the manuscript:
+This repository contains the [Streamlit companion app](https://mnp-compass.streamlit.app/) and supporting materials for the manuscript:
 
 > Learning from history instead of reinventing the wheel: A resource for coordinating microplastics research, reporting, and publication criteria across disciplines
 
