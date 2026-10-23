@@ -12,13 +12,15 @@ Expects:
     - mnp_compass/config/tree_structure.yaml
 """
 
-import streamlit as st
-import pandas as pd
-import yaml
-import sys
-import re
+import hashlib
 import html
+import re
+import sys
 from pathlib import Path
+
+import pandas as pd
+import streamlit as st
+import yaml
 
 # ── CONFIG ──────────────────────────────────────────────────
 
@@ -61,13 +63,28 @@ TIER_ICONS = {1: "🟢", 2: "🔵", 3: "🟡", 4: "⚪"}
 
 # ── DATA LOADING ────────────────────────────────────────────
 
-@st.cache_data
 def load_crosswalk():
-    """Load and clean the crosswalk spreadsheet."""
+    """Load and clean the crosswalk spreadsheet, keyed by its contents."""
     if not CROSSWALK_FILE.exists():
         st.error(f"❌ Crosswalk file not found: {CROSSWALK_FILE}")
         st.stop()
 
+    return _load_crosswalk(crosswalk_fingerprint())
+
+
+def crosswalk_fingerprint():
+    """Return a stable content hash so workbook-only changes invalidate the cache."""
+    digest = hashlib.sha256()
+    with CROSSWALK_FILE.open("rb") as workbook:
+        for chunk in iter(lambda: workbook.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+@st.cache_data
+def _load_crosswalk(workbook_fingerprint):
+    # The fingerprint is intentionally an argument: Streamlit includes it in
+    # the cache key even though the workbook is read through the canonical path.
     df = read_crosswalk_sheet()
     df = df.rename(columns={"Priority Tier": "Authority and Validation Tier"})
 
