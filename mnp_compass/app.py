@@ -1,14 +1,14 @@
 """
 MNP Compass
 Interactive decision-tree tool for researchers planning MP monitoring or toxicology studies.
-Reads from the crosswalk Excel file and guides users to the best available references by tier.
+Reads a generated crosswalk CSV and guides users to the best available references by tier.
 
 Usage from the repository root:
     pip install -r requirements.txt
     streamlit run mnp_compass/app.py
 
 Expects:
-    - mnp_compass/data/crosswalk.xlsx
+    - mnp_compass/data/crosswalk.csv (generated from crosswalk.xlsx)
     - mnp_compass/config/tree_structure.yaml
 """
 
@@ -29,18 +29,8 @@ for import_root in (PROJECT_ROOT, APP_DIR):
         sys.path.insert(0, str(import_root))
 DATA_DIR = APP_DIR / "data"
 CONFIG_DIR = APP_DIR / "config"
-CROSSWALK_FILE = DATA_DIR / "crosswalk.xlsx"
-CROSSWALK_SHEET = "Crosswalk Table"
+CROSSWALK_FILE = DATA_DIR / "crosswalk.csv"
 TREE_FILE = CONFIG_DIR / "tree_structure.yaml"
-# Matched against the raw workbook header (renamed to "Authority and
-# Validation Tier" for app-internal use once loaded — see load_crosswalk()).
-EXPECTED_CROSSWALK_COLUMNS = {
-    "Short Citation",
-    "Priority Tier",
-    "Primary Domain",
-    "Document Type",
-    "Matrix Tags",
-}
 
 TIER_LABELS = {
     1: "★★★★ Tier 1 — Normative / Binding",
@@ -63,12 +53,16 @@ TIER_ICONS = {1: "🟢", 2: "🔵", 3: "🟡", 4: "⚪"}
 
 @st.cache_data
 def load_crosswalk():
-    """Load and clean the crosswalk spreadsheet."""
+    """Load and clean the generated runtime crosswalk."""
     if not CROSSWALK_FILE.exists():
-        st.error(f"❌ Crosswalk file not found: {CROSSWALK_FILE}")
+        st.error(
+            f"❌ Runtime crosswalk not found: {CROSSWALK_FILE}. "
+            "Run `python scripts/export_crosswalk_runtime.py` from the "
+            "repository root."
+        )
         st.stop()
 
-    df = read_crosswalk_sheet()
+    df = read_crosswalk_data()
     df = df.rename(columns={"Priority Tier": "Authority and Validation Tier"})
 
     # Extract tier number from Authority and Validation Tier string (e.g., "★★★★ Tier 1 ..." → 1)
@@ -85,17 +79,9 @@ def load_crosswalk():
     return df
 
 
-def read_crosswalk_sheet():
-    """Read the crosswalk using the row that best matches the app schema."""
-    candidates = [
-        normalize_crosswalk_columns(
-            pd.read_excel(
-                CROSSWALK_FILE, sheet_name=CROSSWALK_SHEET, header=header
-            )
-        )
-        for header in (0, 1)
-    ]
-    return max(candidates, key=crosswalk_schema_score)
+def read_crosswalk_data():
+    """Read the normalized runtime CSV generated from the source workbook."""
+    return normalize_crosswalk_columns(pd.read_csv(CROSSWALK_FILE))
 
 
 def normalize_crosswalk_columns(df):
@@ -104,13 +90,6 @@ def normalize_crosswalk_columns(df):
         " ".join(str(c).strip().split()) for c in df.columns
     ]
     return df
-
-
-def crosswalk_schema_score(df):
-    cols = {c.lower().strip() for c in df.columns}
-    return sum(
-        1 for col in EXPECTED_CROSSWALK_COLUMNS if col.lower() in cols
-    )
 
 
 @st.cache_data
@@ -865,33 +844,40 @@ def main():
                 )
     
     if not step_by_step_enabled:
-        with tab0:
-            from tabs.quick_start_tab import render_quick_start_tab
-            render_quick_start_tab(df)
+        if tab0.open:
+            with tab0:
+                from tabs.quick_start_tab import render_quick_start_tab
+                render_quick_start_tab(df)
 
-    with tab2:
-        from tabs.visual_tree_tab import render_decision_tree
-        render_decision_tree(df, tree)
+    if step_by_step_enabled or tab2.open:
+        with tab2:
+            from tabs.visual_tree_tab import render_decision_tree
+            render_decision_tree(df, tree)
 
     if not step_by_step_enabled:
-        with tab_cov:
-            from tabs.coverage_tab import render_coverage_tab
-            render_coverage_tab(df)
+        if tab_cov.open:
+            with tab_cov:
+                from tabs.coverage_tab import render_coverage_tab
+                render_coverage_tab(df)
 
-    with tab3:
-        from tabs.crosswalk_tab import render_crosswalk_tab
-        render_crosswalk_tab(df)
+    if step_by_step_enabled or tab3.open:
+        with tab3:
+            from tabs.crosswalk_tab import render_crosswalk_tab
+            render_crosswalk_tab(df)
 
-    with tab4:
-        render_search_all_references(df)
+    if step_by_step_enabled or tab4.open:
+        with tab4:
+            render_search_all_references(df)
 
-    with tab5:
-        from tabs.glossary_tab import render_glossary_tab
-        render_glossary_tab()
+    if not step_by_step_enabled and tab5.open:
+        with tab5:
+            from tabs.glossary_tab import render_glossary_tab
+            render_glossary_tab()
 
-    with tab6:
-        from tabs.citation_tab import render_citation_tab
-        render_citation_tab(df)
+    if not step_by_step_enabled and tab6.open:
+        with tab6:
+            from tabs.citation_tab import render_citation_tab
+            render_citation_tab(df)
 
     # ── FOOTER ──────────────────────────────────────────────
     st.divider()

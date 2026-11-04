@@ -1,7 +1,7 @@
 """Quick Start tab: a short guide plus worked examples that open pre-set Decision Tree paths.
 
 Each worked example names specific crosswalk references and their tiers. Those
-claims are checked against crosswalk.xlsx by tests/smoke_test.py (the
+claims are checked against the generated crosswalk data by tests/smoke_test.py (the
 `expected_tiers` field), so if a reference is re-tiered or renamed the test
 fails and the example text below must be updated to match.
 """
@@ -316,7 +316,9 @@ def render_quick_start_tab(df):
 
     for example in WORKED_EXAMPLES:
         with st.container(border=True):
-            if example.get("state"):
+            preview_key = f"quick_start_preview_{example['key']}"
+            show_preview = bool(st.session_state.get(preview_key, False))
+            if example.get("state") and show_preview:
                 text_col, tree_col = st.columns([3, 2], gap="medium")
             else:
                 text_col, tree_col = st.container(), None
@@ -335,6 +337,15 @@ def render_quick_start_tab(df):
                     on_click=_open_example,
                     args=(example,),
                 )
+                if example.get("state"):
+                    st.toggle(
+                        "Show path preview",
+                        key=preview_key,
+                        help=(
+                            "Generate this example's Graphviz diagram. "
+                            "Previews are deferred to keep the initial page fast."
+                        ),
+                    )
             if tree_col is not None:
                 with tree_col:
                     if render_static_graphviz(path_dot_for_state(df, example["state"])):

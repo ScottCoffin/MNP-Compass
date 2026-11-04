@@ -392,9 +392,9 @@ def _render_growth_section(reference_count):
         "MNP Compass is designed to change as the field does. All "
         + (f"{reference_count} " if reference_count else "")
         + "references live in one openly licensed, version-controlled spreadsheet "
-        "(`mnp_compass/data/crosswalk.xlsx`). Result lists, diagram colors, the Coverage & "
-        "Gaps table, and all counts are recalculated from it on every load, so adding or "
-        "re-tiering a reference needs no code changes.\n\n"
+        "(`mnp_compass/data/crosswalk.xlsx`). A generated runtime snapshot drives result "
+        "lists, diagram colors, the Coverage & Gaps table, and all counts, so adding or "
+        "re-tiering a reference needs a data refresh but no app-code changes.\n\n"
         f"- **Suggest a reference, correction, or re-tiering:** open an issue at "
         f"[{GITHUB_URL}/issues]({GITHUB_URL}/issues), or submit a pull request that edits "
         "the spreadsheet (see `CONTRIBUTING.md`). Maintainers review every tier assignment "

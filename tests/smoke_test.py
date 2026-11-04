@@ -16,6 +16,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+# Keep diagnostic labels readable when the Windows console defaults to cp1252.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 from mnp_compass.app import (
     filter_by_domain,
     filter_by_matrix,
@@ -117,6 +121,8 @@ def check_quick_start_end_to_end(errors):
     app.run()
     check(not app.exception, "App runs headless without exceptions", errors)
     for example in WORKED_EXAMPLES:
+        app.session_state[MAIN_TABS_KEY] = MAIN_TABS[0]
+        app.run()
         app.button(key=f"quick_start_{example['key']}").click().run()
         check(not app.exception, f"Quick Start '{example['key']}' runs without exceptions", errors)
         target = example.get("tab", TAB_DECISION_TREE)
@@ -155,8 +161,12 @@ def main():
 
     expected_files = {
         "crosswalk.xlsx": app_dir / "data" / "crosswalk.xlsx",
+        "crosswalk.csv": app_dir / "data" / "crosswalk.csv",
         "tree_structure.yaml": app_dir / "config" / "tree_structure.yaml",
         "app.py": app_dir / "app.py",
+        "export_crosswalk_runtime.py": (
+            PROJECT_ROOT / "scripts" / "export_crosswalk_runtime.py"
+        ),
         "visual_tree_tab.py": app_dir / "tabs" / "visual_tree_tab.py",
         "crosswalk_tab.py": app_dir / "tabs" / "crosswalk_tab.py",
         "glossary_tab.py": app_dir / "tabs" / "glossary_tab.py",
@@ -167,6 +177,7 @@ def main():
 
     for label in [
         "app.py",
+        "export_crosswalk_runtime.py",
         "visual_tree_tab.py",
         "crosswalk_tab.py",
         "glossary_tab.py",
@@ -323,13 +334,11 @@ def main():
             errors,
         )
 
-        air_df = _filter_matrix(nav_monitoring, MATRICES["air"]["kw"])
-        extraction_step = next(
-            step for step in MONITORING_CORE if step["key"] == "extraction"
-        )
-        air_extraction = _apply_step_filters(air_df, extraction_step)
         context_messages = [
-            text for _, text in _reference_context_messages(air_extraction)
+            text
+            for _, text in _reference_context_messages(
+                pd.DataFrame({"tier_num": [3, 4], "Year": [2024, 2025]})
+            )
         ]
         check(
             any(

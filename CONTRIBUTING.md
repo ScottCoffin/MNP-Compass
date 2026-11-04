@@ -32,6 +32,8 @@ updates through GitHub pull requests." This document describes that workflow.
 5. Do not hand-edit `Particle Size Range`, `Key Metrics / Output`, or `Abstract` if you'd rather let
    `scripts/fill_crosswalk_metadata.py` populate them (dry-run by default; see
    [Metadata Fill Workflow](README.md#metadata-fill-workflow)).
+6. Regenerate the app's committed runtime snapshot with
+   `python scripts/export_crosswalk_runtime.py`. Do not edit `crosswalk.csv` by hand.
 
 ## Tier schema
 
@@ -58,6 +60,8 @@ From the repository root:
 
 ```powershell
 python -m pip install -r requirements.txt
+python -m pip install -r requirements-maintenance.txt
+python scripts/export_crosswalk_runtime.py --check
 python tests/smoke_test.py
 streamlit run mnp_compass/app.py
 ```
@@ -73,6 +77,8 @@ say so in the PR rather than trying to fix unrelated failures.
 
 - [ ] `python tests/smoke_test.py` passes (or you've noted pre-existing failures your change didn't
       introduce)
+- [ ] `python scripts/export_crosswalk_runtime.py --check` confirms `crosswalk.csv` matches the
+      canonical workbook
 - [ ] `streamlit run mnp_compass/app.py` launches and your change is visible where expected
 - [ ] `crosswalk.xlsx` was edited with Excel closed afterward (no lock file left behind)
 - [ ] New/changed tier assignments are explained in the PR description

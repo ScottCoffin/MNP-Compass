@@ -8,7 +8,7 @@ The app helps researchers locate microplastics and nanoplastics methods, standar
 
 ![Graphical Abstract](mnp_compass/www/graphical_abstract.png)
 
-MNP Compass is an interactive decision-tree web tool for researchers designing microplastics monitoring, toxicology, or risk assessment studies. Users step through their study type, environmental matrix (drinking water, sediment, biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical identification, QA/QC, reporting) to retrieve a curated, ranked list of methods, standards, and guidance documents drawn from a crosswalk of <!-- count sourced from crosswalk.xlsx row count as of 2026-08-27; the in-app count on the Crosswalk and About tabs is computed live from the same file and will not drift from it, but this README prose count is static and should be updated by hand if the workbook's row count changes -->190 seminal references in microplastics research. Results are grouped by a four-tier authority and validation framework — described below — and displayed with document type, key notes, and direct links, with the option to export filtered results to CSV. Worked examples (Quick Start), a live map of where authoritative methods exist and where they are missing (Coverage & Gaps), a full-text search across all references, and a domain glossary are also available.
+MNP Compass is an interactive decision-tree web tool for researchers designing microplastics monitoring, toxicology, or risk assessment studies. Users step through their study type, environmental matrix (drinking water, sediment, biota, air, food, soil, and others), and workflow step (sampling, extraction, analytical identification, QA/QC, reporting) to retrieve a curated, ranked list of methods, standards, and guidance documents drawn from a crosswalk of <!-- count sourced from crosswalk.xlsx row count as of 2026-11-04; the in-app count on the Crosswalk and About tabs is computed from the generated runtime snapshot; update this prose count when the workbook changes -->194 seminal references in microplastics research. Results are grouped by a four-tier authority and validation framework — described below — and displayed with document type, key notes, and direct links, with the option to export filtered results to CSV. Worked examples (Quick Start), a live map of where authoritative methods exist and where they are missing (Coverage & Gaps), a full-text search across all references, and a domain glossary are also available.
 
 ### Authority and Validation Tier Framework
 
@@ -58,6 +58,7 @@ python tests/smoke_test.py
 |-- README.md
 |-- LICENSE
 |-- requirements.txt
+|-- requirements-maintenance.txt
 |-- requirements-metadata.txt
 |-- packages.txt
 |-- mnp_compass/
@@ -66,6 +67,7 @@ python tests/smoke_test.py
 |   |   `-- tree_structure.yaml
 |   |-- data/
 |   |   |-- crosswalk.xlsx
+|   |   |-- crosswalk.csv
 |   |   `-- metadata_cache/
 |   `-- tabs/
 |       |-- citation_tab.py
@@ -75,6 +77,7 @@ python tests/smoke_test.py
 |       |-- quick_start_tab.py
 |       `-- visual_tree_tab.py
 |-- scripts/
+|   |-- export_crosswalk_runtime.py
 |   `-- fill_crosswalk_metadata.py
 |-- tests/
 |   `-- smoke_test.py
@@ -93,7 +96,9 @@ python tests/smoke_test.py
 
 `mnp_compass/app.py` is the Streamlit entry point.
 
-`mnp_compass/data/crosswalk.xlsx` is the source workbook. The app reads the `Crosswalk Table` sheet and does not modify it.
+`mnp_compass/data/crosswalk.xlsx` is the canonical source workbook. The app reads the generated
+`mnp_compass/data/crosswalk.csv` runtime snapshot, which is refreshed deterministically with
+`python scripts/export_crosswalk_runtime.py` after workbook changes.
 
 `mnp_compass/config/tree_structure.yaml` stores a decision-tree structure and gap notes, loaded by `app.py`. **Note:** the live "Decision Tree" tab is currently rendered entirely by hardcoded Python dicts in `mnp_compass/tabs/visual_tree_tab.py` (matrices, instruments, particle types, workflow steps) and does not read this YAML — the YAML only feeds a "Step-by-Step Navigator" tab that is currently disabled (`step_by_step_enabled = False` in `app.py`). The two enumerations have drifted as a result; see `TODO(human)` in `visual_tree_tab.py` and `AUDIT_FINDINGS.md`.
 
@@ -105,7 +110,7 @@ python tests/smoke_test.py
 
 ## Crosswalk Data Fields
 
-`mnp_compass/data/crosswalk.xlsx`'s "Crosswalk Table" sheet (header row 2) is the single source of truth for every reference the app surfaces — currently 190 rows. Column headers use embedded line breaks for readability in Excel; the app collapses them to single spaces at load time, and additionally renames `Priority Tier` to `Authority and Validation Tier` in memory (see [Authority and Validation Tier Framework](#authority-and-validation-tier-framework)) without touching the workbook itself.
+`mnp_compass/data/crosswalk.xlsx`'s "Crosswalk Table" sheet (header row 2) is the single source of truth for every reference the app surfaces — currently 194 rows. Column headers use embedded line breaks for readability in Excel. The export script collapses them to single spaces in the generated CSV, and the app additionally renames `Priority Tier` to `Authority and Validation Tier` in memory (see [Authority and Validation Tier Framework](#authority-and-validation-tier-framework)) without touching the workbook itself.
 
 **Bibliographic:** `#`, `Short Citation`, `Year`, `Full Title`, `DOI/URL`
 
@@ -127,13 +132,17 @@ Runtime Python dependencies are listed in `requirements.txt`:
 
 - `streamlit`
 - `pandas`
-- `openpyxl`
 - `pyyaml`
 - `graphviz`
 
 The Python `graphviz` package also needs the Graphviz `dot` executable available on `PATH`.
+Runtime packages are pinned to the versions exercised by the app test suite so that Community
+Cloud does not silently adopt an incompatible release. `openpyxl` is maintenance-only and is
+listed in `requirements-maintenance.txt`; the deployed app does not parse Excel.
 
-Optional metadata-enrichment dependencies are listed in `requirements-metadata.txt`.
+Workbook-export dependencies are listed in `requirements-maintenance.txt`. Optional
+metadata-enrichment dependencies are listed in `requirements-metadata.txt`, which includes the
+maintenance requirements.
 
 ## Metadata Fill Workflow
 
@@ -179,9 +188,22 @@ The default cache and audit files live under `mnp_compass/data/metadata_cache/`.
 
 ## Reproducibility Notes
 
-Use the root-level `requirements.txt` and `packages.txt` for app execution. Use `requirements-metadata.txt` only for the optional metadata fill workflow.
+Use the root-level `requirements.txt` and `packages.txt` for app execution. Use
+`requirements-maintenance.txt` for workbook export and `requirements-metadata.txt` for the
+optional metadata fill workflow.
 
 Keep `mnp_compass/data/crosswalk.xlsx` as the canonical data source for the app and figures. If you edit the workbook in Excel, close Excel before running scripts that read or write it.
+
+After every canonical workbook change, regenerate and verify the committed runtime snapshot:
+
+```powershell
+python scripts/export_crosswalk_runtime.py
+python scripts/export_crosswalk_runtime.py --check
+```
+
+The export command requires the optional maintenance dependencies. Install them with
+`python -m pip install -r requirements-maintenance.txt` when maintaining the workbook. The app never
+writes the workbook or the generated CSV.
 
 Regenerate or check app behavior after structural changes with:
 
@@ -204,6 +226,9 @@ For Streamlit Cloud or a dev container:
 1. Install apt packages from `packages.txt`.
 2. Install Python packages from `requirements.txt`.
 3. Use `streamlit run mnp_compass/app.py` as the launch command.
+
+The generated `mnp_compass/data/crosswalk.csv` must be committed before deployment. Community
+Cloud loads this file directly and therefore does not need `openpyxl` during startup.
 
 The `.devcontainer/devcontainer.json` file follows this layout and auto-starts the app on port `8501`.
 

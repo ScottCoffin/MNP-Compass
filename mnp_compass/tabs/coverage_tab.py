@@ -1,8 +1,7 @@
 """Coverage & Gaps tab: best available tier per matrix × monitoring workflow step.
 
-Computed live from crosswalk.xlsx with the same filters the Decision Tree uses
-(visual_tree_tab.monitoring_coverage), so it updates automatically as
-references are added or re-tiered.
+Computed live from the generated crosswalk dataset with the same filters the Decision Tree uses
+(visual_tree_tab.monitoring_coverage), so it updates whenever the runtime snapshot is refreshed.
 """
 
 from __future__ import annotations
@@ -126,7 +125,8 @@ def render_coverage_tab(df):
             "which counts references scored in each matrix column.\n"
             "- Matrix-conditional tier adjustments (see About → How results are selected and "
             "ordered) are applied before the best tier is taken.\n"
-            "- The table recalculates from `crosswalk.xlsx` on every load, so it changes as "
+            "- The table recalculates from the generated crosswalk data on every load, so it "
+            "changes as "
             "references are added or re-tiered."
         )
 
